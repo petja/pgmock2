@@ -19,13 +19,11 @@ export default class PGMock2 {
      * Add a query, it's value definitions, and response to the
      * mock database.
      * @param {string} query An SQL query statement.
-     * @param {array} valueDefs Contains the types of each value used
-     * in the query.
      * @param {object} response The simulated expected response of
      * the given query.
      * @example
      * ```
-     * pgmock.add("SELECT * FROM employees WHERE id = $1", ['number'], {
+     * pgmock.add("SELECT * FROM employees WHERE id = $1", {
      *     rowCount: 1,
      *     rows: [
      *         { id: 1, name: 'John Smith', position: 'application developer' }
@@ -58,9 +56,7 @@ export default class PGMock2 {
              * Query the mock database.
              * @memberof connect
              * @param {string} sql An SQL statement.
-             * @param {array} values Arguments for the SQL statement or
-             * an empty array if no values in the statement.
-             * @example conn.query('select * from employees where id=$1;', [0])
+             * @example conn.query('select * from employees where id=$1;')
              * .then(data => console.log(data))
              * .catch(err => console.log(err.message));
              * @example {
@@ -128,7 +124,6 @@ export default class PGMock2 {
      * {
      *     "3141ffa79e40392187830c52d0588f33": {
      *         "query": "SELECT * FROM it.projects",
-     *         "valDefs": [],
      *         "response": {
      *             "rowCount": 3,
      *             "rows": [
@@ -149,7 +144,6 @@ export default class PGMock2 {
      *     },
      *     "81c4b35dfd07db7dff2cb0e91228e833": {
      *         "query": "SELECT * FROM it.projects WHERE title = $1",
-     *         "valDefs": ["string"],
      *         "response": {
      *             "rowCount": 1,
      *             "rows": [
