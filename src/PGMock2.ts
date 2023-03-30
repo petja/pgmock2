@@ -1,4 +1,4 @@
-import md5 from 'md5';
+import crypto from 'crypto';
 import { QueryConfig, QueryResult } from 'pg';
 import { IPGClient, IPGMockData, MockQueryResult } from './interfaces';
 
@@ -173,8 +173,11 @@ export default class PGMock2 {
     // Return the rawQuery in lowercase, without spaces nor
     // a trailing semicolon.
     private normalize(rawQuery: string): string {
-        const norm = rawQuery.toLowerCase().replace(/\s/g, '');
-        return md5(norm.replace(/;$/, '')).toString();
+        const norm = rawQuery.toLowerCase().replace(/\s/g, "").replace(/;$/, "");
+        const hash = crypto.createHash("md5");
+        hash.update(norm);
+
+        return hash.digest().toString("hex");
     }
 
     private performQuery(sql: string, values: unknown[] = []): Promise<QueryResult> {
