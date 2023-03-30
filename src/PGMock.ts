@@ -4,14 +4,13 @@ import { IPGClient, IPGMockData, MockQueryResult } from './interfaces';
 
 /**
  * An NPM module for mocking a connection to a PostgreSQL database.
- * @author Jason Favrod <mail@jasonfavrod.com>
  * @example
  * ```
- * const PGMock2 = require('pgmock2'),
- * const pgmock = new PGMock2();
+ * const PGMock = require('pgmock3'),
+ * const pgmock = new PGMock();
  * ```
  */
-export default class PGMock2 {
+export default class PGMock {
     private data = {} as IPGMockData;
     private latency = 20;
 

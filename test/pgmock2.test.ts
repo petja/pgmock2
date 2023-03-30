@@ -7,7 +7,7 @@ import { isIPGClient } from '../src/typeguards';
 
 import pgmock, { getPool } from '../src';
 
-describe('pgmock2 tests...', () => {
+describe('pgmock3 tests...', () => {
     describe('Test Instance', () => {
         const pg = new pgmock();
 
@@ -23,7 +23,7 @@ describe('pgmock2 tests...', () => {
             {attrib1: 'val1', attrib2: 'val2'}
         ];
 
-        pg.add('SELECT * FROM schema.table;', [], {
+        pg.add('SELECT * FROM schema.table;', {
             rowCount: 1,
             rows,
         } as QueryResult);
@@ -59,7 +59,7 @@ describe('pgmock2 tests...', () => {
         const sql = 'SELECT * FROM schema.table;';
         const len = pg.toString().length;
 
-        pg.add(sql, [], {
+        pg.add(sql, {
             rowCount: 1,
             rows: [
                 {attrib1: 'val1', attrib2: 'val2'}
@@ -84,14 +84,14 @@ describe('pgmock2 tests...', () => {
         const sql2 = 'SELECT * FROM schema2.table2;';
         const len = pg.toString().length;
 
-        pg.add(sql1, [], {
+        pg.add(sql1,  {
             rowCount: 1,
             rows: [
                 {attrib1: 'val1', attrib2: 'val1'}
             ]
         } as QueryResult);
 
-        pg.add(sql2, [], {
+        pg.add(sql2,  {
             rowCount: 1,
             rows: [
                 {attrib1: 'val2', attrib2: 'val2'}
@@ -113,7 +113,7 @@ describe('pgmock2 tests...', () => {
         const pg = new pgmock();
         const query = 'SELECT * FROM schema.table;';
 
-        pg.add(query, [], {
+        pg.add(query,  {
             rowCount: 1,
             rows: [
                 {attrib1: 'val1', attrib2: 'val2'}
@@ -170,7 +170,7 @@ describe('pgmock2 tests...', () => {
         const query = 'SELECT * FROM schema.table;';
         interface TestType { attrib1: string; attrib2: string }
 
-        pg.add(query, [], {
+        pg.add(query,  {
             rowCount: 1,
             rows: [
                 {attrib1: 'val1', attrib2: 'val2'}
@@ -252,7 +252,7 @@ describe('pgmock2 tests...', () => {
             id > 0 && id === Number(parseInt(id as string))
         );
 
-        pg.add('SELECT * FROM employees WHERE id = $1', [validId], {
+        pg.add('SELECT * FROM employees WHERE id = $1',  {
             rowCount: 1,
             rows: [
                 { id: 1, name: 'John Smith', position: 'application developer' }
@@ -277,7 +277,7 @@ describe('pgmock2 tests...', () => {
             id > 0 && id === Number(parseInt(id as string))
         );
 
-        pg.add(query, [validId], {
+        pg.add(query,  {
             rowCount: 1,
             rows: [
                 { id: 1, name: 'John Smith', position: 'application developer' }
@@ -308,7 +308,7 @@ describe('pgmock2 tests...', () => {
             typeof(id) === 'number' && isFinite(id) && id > 0 && id === Number(id.toFixed(0))
         );
 
-        pg.add('SELECT * FROM employees WHERE id = $1', [validId], {
+        pg.add('SELECT * FROM employees WHERE id = $1',  {
             rowCount: 1,
             rows: [
                 { id: 1, name: 'John Smith', position: 'application developer' }
@@ -357,7 +357,7 @@ describe('pgmock2 tests...', () => {
             id > 0 && id === Number(parseInt(id as string))
         );
 
-        pg.add("SELECT * FROM employees WHERE id = $1", [validId], {
+        pg.add("SELECT * FROM employees WHERE id = $1", {
             rowCount: 1,
             rows: [
                 { id: 1, name: "John Smith", position: "application developer" },
@@ -396,7 +396,7 @@ describe('pgmock2 tests...', () => {
             typeof(id) === 'number' && isFinite(id) && id > 0 && id === Number(id.toFixed(0))
         );
 
-        pg.add(query, [validId], {
+        pg.add(query, {
             rowCount: 1,
             rows: [
                 { id: 1, name: 'John Smith', position: 'application developer' }
@@ -446,7 +446,7 @@ describe('pgmock2 tests...', () => {
             id > 0 && id === Number(parseInt(id as string))
         );
 
-        pg.add(query, [validId], {
+        pg.add(query,  {
             rowCount: 1,
             rows: [
                 { id: 1, name: "John Smith", position: "application developer" },
@@ -480,7 +480,7 @@ describe('pgmock2 tests...', () => {
         const pg = new pgmock();
         const pool = getPool(pg);
 
-        pg.add('SELECT * FROM employees', [], {
+        pg.add('SELECT * FROM employees', {
             rowCount: 3,
             rows: [
                 { id: 1, name: 'John Smith', position: 'application developer' },

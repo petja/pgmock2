@@ -1,8 +1,7 @@
 {
-  "name": "pgmock2",
-  "version": "2.1.5",
+  "name": "pgmock3",
+  "version": "3.0.0",
   "description": "An NPM module for mocking a connection to a PostgreSQL database.",
-  "homepage": "https://jfavrod.github.io/pgmock2/",
   "main": "lib/index.js",
   "scripts": {
     "build": "run-s lint test compile",
@@ -21,7 +20,6 @@
     "pg": "^8.7.1"
   },
   "devDependencies": {
-    "@types/md5": "^2.3.1",
     "@types/mocha": "^9.0.0",
     "@types/pg": "^8.6.1",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
@@ -42,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:jfavrod/pgmock2.git"
+    "url": "git@github.com:petja/pgmock3.git"
   },
   "keywords": [
     "pg",
@@ -52,8 +50,9 @@
     "test",
     "testing"
   ],
-  "author": "Jason Favrod <mail@jasonfavrod.com> (http://jasonfavrod.com)",
+  "author": "Petja Touru <hello@petja.me> (https://petja.me)",
   "contributors": [
+    "Jason Favrod <mail@jasonfavrod.com> (http://jasonfavrod.com)",
     "RipTheJacker <unknown@none.com> (https://github.com/RipTheJacker)",
     "Dorinel Panaite <van.panaite@gmail.com> (http://vanpana.github.io/)",
     "Hyeong Jun An (Sam) <sammiee5311@gmail.com> (https://sammiee-portfolio.netlify.app)"
