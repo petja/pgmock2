@@ -16,6 +16,5 @@ export interface IPGMockData {
     [index: string]: {
         query: string;
         response: MockQueryResult;
-        valDefs: unknown[];
     };
 }

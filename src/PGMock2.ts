@@ -33,11 +33,10 @@ export default class PGMock2 {
      * });
      * ```
      */
-    public add(query: string, valueDefs: any[], response: MockQueryResult) {
+    public add(query: string, response: MockQueryResult) {
         this.data[this.normalize(query)] = {
             query,
             response,
-            valDefs: valueDefs,
         };
     }
 
@@ -71,8 +70,8 @@ export default class PGMock2 {
              *   ]
              * }
              */
-            query: (queryTextOrConfig: string | QueryConfig, values?: any[]): Promise<QueryResult> => (
-                this.query(queryTextOrConfig, values)
+            query: (queryTextOrConfig: string | QueryConfig): Promise<QueryResult> => (
+                this.query(queryTextOrConfig)
             ),
 
             /**
@@ -108,11 +107,11 @@ export default class PGMock2 {
 
     public end() { return new Promise((res) => res(null)); }
 
-    public query(queryTextOrConfig: string | QueryConfig, values?: any[]): Promise<QueryResult> {
+    public query(queryTextOrConfig: string | QueryConfig): Promise<QueryResult> {
         if (typeof queryTextOrConfig === 'object') {
-            return this.performQuery(queryTextOrConfig.text, values || queryTextOrConfig.values);
+            return this.performQuery(queryTextOrConfig.text);
         }
-        return this.performQuery(queryTextOrConfig, values);
+        return this.performQuery(queryTextOrConfig);
     }
 
     /**
@@ -180,53 +179,20 @@ export default class PGMock2 {
         return hash.digest().toString("hex");
     }
 
-    private performQuery(sql: string, values: unknown[] = []): Promise<QueryResult> {
+    private performQuery(sql: string): Promise<QueryResult> {
         const norm = this.normalize(sql);
         const validQuery = this.data[norm];
 
-        return new Promise( (resolve, reject) => {
-            if (validQuery && this.validVals(values, validQuery.valDefs)) {
+        return new Promise((resolve, reject) => {
+            if (validQuery) {
                 setTimeout(() => {
                     resolve(validQuery.response as QueryResult);
                 }, this.latency);
-            }
-            else {
-                if (!validQuery) {
-                    setTimeout(() => {
-                        reject(new Error('invalid query: ' + sql + ' query hash: ' + norm));
-                    }, this.latency);
-                }
-                else {
-                    setTimeout(() => {
-                        reject(new Error('invalid values: ' + JSON.stringify(values)));
-                    }, this.latency);
-                }
+            } else {
+                setTimeout(() => {
+                    reject(new Error('invalid query: ' + sql + ' query hash: ' + norm));
+                }, this.latency);
             }
         });
-    }
-
-    private validVals(values: unknown[], defs: unknown[]) {
-        let bool = true;
-
-        if (values && values.length) {
-            if (!defs.length || values.length !== defs.length) {
-                throw Error('invalid values: Each value must have a corresponding definition.');
-            }
-
-            values.forEach( (val, i) => {
-                if (typeof(defs[i]) === 'string') {
-                    // Change bool to false if typeof val doesn't
-                    // match value definition string.
-                    if (typeof(val) !== defs[i]) { bool = false; }
-                }
-                else if (typeof(defs[i]) === 'function') {
-                    // Change bool to false if false returned from
-                    // value definition function.
-                    if (!(defs[i] as CallableFunction)(val)) { bool = false; }
-                }
-            });
-        }
-
-        return bool;
     }
 }
